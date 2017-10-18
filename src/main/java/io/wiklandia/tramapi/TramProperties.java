@@ -11,6 +11,9 @@ import lombok.Data;
 public class TramProperties {
 
 	private String linedataApi;
-	private String key;
+	private String linedataKey;
+
+	private String realtimeApi;
+	private String realtimeKey;
 
 }

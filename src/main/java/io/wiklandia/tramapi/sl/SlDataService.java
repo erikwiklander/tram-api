@@ -80,7 +80,7 @@ public class SlDataService {
 	private JsonNode callApi(String model) throws JsonProcessingException, IOException {
 
 		String url = UriComponentsBuilder.fromHttpUrl(props.getLinedataApi()).queryParam("model", model)
-				.queryParam("key", props.getKey()).build().toString();
+				.queryParam("key", props.getLinedataKey()).build().toString();
 
 		log.debug("Calling: {}", url);
 
