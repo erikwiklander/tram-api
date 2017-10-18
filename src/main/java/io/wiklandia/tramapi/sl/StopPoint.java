@@ -11,5 +11,5 @@ public class StopPoint {
 	private final double ncoord;
 	private final double ecoord;
 	private final int direction;
-
+	private final int siteId;
 }

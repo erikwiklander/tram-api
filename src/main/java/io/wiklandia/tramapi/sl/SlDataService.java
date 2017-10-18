@@ -46,6 +46,12 @@ public class SlDataService {
 			}
 		}
 
+		JsonNode siteNode = readFile("site");
+		Map<Integer, Integer> siteIdByArea = new HashMap<>();
+		for (JsonNode node : siteNode.findPath("ResponseData").findPath("Result")) {
+			siteIdByArea.put(node.findPath("StopAreaNumber").asInt(), node.findPath("SiteId").asInt());
+		}
+
 		JsonNode stopNode = readFile("stop");
 
 		List<StopPoint> points = new ArrayList<>();
@@ -53,9 +59,11 @@ public class SlDataService {
 
 			int stopPoint = node.findPath("StopPointNumber").asInt();
 			if (directionByPoint.keySet().contains(stopPoint)) {
-				StopPoint p = new StopPoint(stopPoint, node.findPath("StopAreaNumber").asInt(),
-						node.findPath("StopPointName").asText(), node.findPath("LocationNorthingCoordinate").asDouble(),
-						node.findPath("LocationEastingCoordinate").asDouble(), directionByPoint.get(stopPoint));
+				int areaNumber = node.findPath("StopAreaNumber").asInt();
+				StopPoint p = new StopPoint(stopPoint, areaNumber, node.findPath("StopPointName").asText(),
+						node.findPath("LocationNorthingCoordinate").asDouble(),
+						node.findPath("LocationEastingCoordinate").asDouble(), directionByPoint.get(stopPoint),
+						siteIdByArea.get(areaNumber));
 				points.add(p);
 			}
 
