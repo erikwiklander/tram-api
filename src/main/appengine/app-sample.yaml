@@ -1,5 +1,0 @@
-# rename this file to app.yaml and change settings accordingly
-runtime: java
-env: flex
-env_variables:
-  SPRING_PROFILES_ACTIVE: 'google'
