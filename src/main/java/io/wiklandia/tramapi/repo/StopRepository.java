@@ -1,7 +1,10 @@
 package io.wiklandia.tramapi.repo;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -27,7 +30,7 @@ public class StopRepository {
 
 	private List<Stop> stops = new ArrayList<>();
 	private List<Long> ids = new ArrayList<>();
-	private SortedMap<Long, Stop> byId = new TreeMap<>();
+	private Map<String, String> nameByFullName = new HashMap<>();
 
 	public List<Stop> getAllStops() {
 		return this.stops;
@@ -43,41 +46,47 @@ public class StopRepository {
 			sort.put(v, p);
 		}
 
-		return new ArrayList<Stop>(sort.values());
+		return new ArrayList<>(sort.values());
 	}
 
-	public String getSickla(long id) {
-		int index = ids.indexOf(id);
-		log.debug("sickla {}", index);
-		if (index >= ids.size()) {
-			return stops.get(index).getName();
-		} else {
-			return null;
-		}
-	}
-
-	public String getSolna(long id) {
-		int index = ids.indexOf(id);
-		log.debug("solna {}", index);
-		if (index < ids.size()) {
-			return stops.get(index).getName();
-		} else {
-			return null;
-		}
+	public boolean exists(long id) {
+		return ids.contains(id);
 	}
 
 	@PostConstruct
-	public void loadData() throws Exception {
+	public void loadData() throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
 		this.stops = objectMapper.readValue(new ClassPathResource("22.json").getInputStream(),
 				new TypeReference<List<Stop>>() {
 				});
 
 		for (Stop stop : this.stops) {
-			this.byId.put(stop.getId(), stop);
 			this.ids.add(stop.getId());
+			nameByFullName.put(stop.getFullname(), stop.getName());
 		}
 
+	}
+
+	public String getName(String fullName) {
+		return nameByFullName.get(fullName);
+	}
+
+	public Stop getPrev(long id) {
+		int index = ids.indexOf(id);
+		if (index == 0) {
+			return null;
+		} else {
+			return stops.get(index - 1);
+		}
+	}
+
+	public Stop getNext(long id) {
+		int index = ids.indexOf(id);
+		if (index == ids.size() - 1) {
+			return null;
+		} else {
+			return stops.get(index + 1);
+		}
 	}
 
 }

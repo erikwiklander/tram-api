@@ -1,16 +1,14 @@
 package model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Departure {
-
-	LocalTime time;
-	LocalDate date;
-	String end;
-	String dest;
-
+	private LocalDateTime depTime;
+	private LocalDateTime rtDepTime;
+	private String end;
 }
