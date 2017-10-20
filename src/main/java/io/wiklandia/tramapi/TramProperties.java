@@ -10,10 +10,7 @@ import lombok.Data;
 @ConfigurationProperties("tram")
 public class TramProperties {
 
-	private String linedataApi;
-	private String linedataKey;
-
-	private String realtimeApi;
-	private String realtimeKey;
+	private String robotApi;
+	private String robotKey;
 
 }
