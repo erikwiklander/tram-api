@@ -1,6 +1,5 @@
 package io.wiklandia.tramapi.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -29,21 +28,14 @@ public class SiteController {
 
 	@GetMapping("stops")
 	public List<Stop> getAll() {
+		log.debug("Gettig all");
 		return pointRepo.getAllStops();
 	}
 
 	@GetMapping("closest")
 	public List<Stop> getClosest(@RequestParam("lo") double lon, @RequestParam("la") double lat) {
+		log.debug("Getting closest: {} {}", lon, lat);
 		return pointRepo.getClosest(lon, lat);
-	}
-
-	@GetMapping("next")
-	public List<Stop> next(@RequestParam("id") long id) {
-
-		Stop d1 = pointRepo.getPrev(id);
-		Stop d2 = pointRepo.getNext(id);
-
-		return Arrays.asList(d1, d2);
 	}
 
 	/**
@@ -52,7 +44,7 @@ public class SiteController {
 	 * @throws ExecutionException
 	 * @throws InterruptedException
 	 */
-	@GetMapping("test")
+	@GetMapping("next")
 	public NextResponse test(@RequestParam("id") long id) throws InterruptedException, ExecutionException {
 
 		log.debug("Getting departures from: {}", id);
