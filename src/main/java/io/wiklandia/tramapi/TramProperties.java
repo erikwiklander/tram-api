@@ -1,5 +1,7 @@
 package io.wiklandia.tramapi;
 
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -13,4 +15,5 @@ public class TramProperties {
 	private String robotApi;
 	private String robotKey;
 
+	private List<String> allowedOrigins;
 }

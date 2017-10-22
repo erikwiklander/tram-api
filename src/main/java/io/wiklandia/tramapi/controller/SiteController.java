@@ -38,6 +38,12 @@ public class SiteController {
 		return pointRepo.getClosest(lon, lat);
 	}
 
+	@GetMapping("closestId")
+	public long getClosestId(@RequestParam("lo") double lon, @RequestParam("la") double lat) {
+		log.debug("Getting closest: {} {}", lon, lat);
+		return pointRepo.getClosest(lon, lat).get(0).getId();
+	}
+
 	/**
 	 * @param id
 	 * @return
