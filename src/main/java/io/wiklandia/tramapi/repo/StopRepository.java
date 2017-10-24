@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.wiklandia.tramapi.controller.UnknownIdException;
 import lombok.extern.slf4j.Slf4j;
 import model.Stop;
 
@@ -49,10 +50,6 @@ public class StopRepository {
 		return new ArrayList<>(sort.values());
 	}
 
-	public boolean exists(long id) {
-		return ids.contains(id);
-	}
-
 	@PostConstruct
 	public void loadData() throws IOException {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -72,6 +69,11 @@ public class StopRepository {
 	}
 
 	public Stop getPrev(long id) {
+
+		if (!ids.contains(id)) {
+			throw new UnknownIdException(String.format("Id does not exist: '%s'", id));
+		}
+
 		int index = ids.indexOf(id);
 		if (index == 0) {
 			return null;

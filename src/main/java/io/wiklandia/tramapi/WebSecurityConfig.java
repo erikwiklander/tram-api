@@ -25,7 +25,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/application/**", "/station/**").permitAll().anyRequest().authenticated();
+		http.authorizeRequests().antMatchers("/application/**", "/sickla", "/closestId", "/solna").permitAll()
+				.anyRequest().authenticated();
 
 		if (securityProperties.isRequireSsl()) {
 			http.requiresChannel().anyRequest().requiresSecure();

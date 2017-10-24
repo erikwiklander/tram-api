@@ -2,13 +2,11 @@ package io.wiklandia.tramapi.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,12 +30,11 @@ public class RobotService {
 	private final RestTemplate restTemplate;
 	private final StopRepository stopRepo;
 
-	@Async
 	@Cacheable("realtime")
-	public Future<List<Departure>> getNext(long id, Stop directionStop) {
+	public List<Departure> getNext(long id, Stop directionStop) {
 
 		if (directionStop == null) {
-			return new AsyncResult<>(null);
+			return Collections.emptyList();
 		}
 
 		// @formatter:off
@@ -54,7 +51,11 @@ public class RobotService {
 
 		log.debug("Calling api: {}", url);
 
+		long t0 = System.currentTimeMillis();
+
 		JsonNode res = restTemplate.getForEntity(url, JsonNode.class).getBody();
+
+		log.debug("Call done: ({}ms)", System.currentTimeMillis() - t0);
 
 		List<Departure> deps = new ArrayList<>();
 		for (JsonNode departure : res.findPath("Departure")) {
@@ -77,7 +78,7 @@ public class RobotService {
 
 		}
 
-		return new AsyncResult<>(deps);
+		return deps;
 
 	}
 
