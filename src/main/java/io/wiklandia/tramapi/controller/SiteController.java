@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.wiklandia.tramapi.model.Departure;
+import io.wiklandia.tramapi.model.Stop;
 import io.wiklandia.tramapi.repo.StopRepository;
 import io.wiklandia.tramapi.service.RobotService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.Departure;
-import model.Stop;
 
 @Slf4j
 @RestController

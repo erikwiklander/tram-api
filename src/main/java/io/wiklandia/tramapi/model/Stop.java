@@ -1,4 +1,4 @@
-package model;
+package io.wiklandia.tramapi.model;
 
 import lombok.Data;
 

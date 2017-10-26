@@ -15,11 +15,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import io.wiklandia.tramapi.TramProperties;
+import io.wiklandia.tramapi.model.Departure;
+import io.wiklandia.tramapi.model.Stop;
 import io.wiklandia.tramapi.repo.StopRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.Departure;
-import model.Stop;
 
 @Slf4j
 @Service
@@ -27,7 +27,6 @@ import model.Stop;
 public class RobotService {
 
 	private final TramProperties props;
-	private final RestTemplate restTemplate;
 	private final StopRepository stopRepo;
 
 	@Cacheable("realtime")
@@ -53,6 +52,7 @@ public class RobotService {
 
 		long t0 = System.currentTimeMillis();
 
+		RestTemplate restTemplate = new RestTemplate();
 		JsonNode res = restTemplate.getForEntity(url, JsonNode.class).getBody();
 
 		log.debug("Call done: ({}ms)", System.currentTimeMillis() - t0);

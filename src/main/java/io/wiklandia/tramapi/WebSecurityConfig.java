@@ -32,6 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			http.requiresChannel().anyRequest().requiresSecure();
 		}
 
+		http.httpBasic();
+
 		http.cors();
 
 	}
@@ -45,4 +47,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
 }

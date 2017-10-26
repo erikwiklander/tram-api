@@ -17,15 +17,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.wiklandia.tramapi.controller.UnknownIdException;
-import lombok.extern.slf4j.Slf4j;
-import model.Stop;
+import io.wiklandia.tramapi.model.Stop;
 
 /**
  * Repository for all points along tvärbanan
  * 
  *
  */
-@Slf4j
 @Component
 public class StopRepository {
 
