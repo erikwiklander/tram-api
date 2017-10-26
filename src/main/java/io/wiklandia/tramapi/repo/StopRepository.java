@@ -30,6 +30,7 @@ public class StopRepository {
 	private List<Stop> stops = new ArrayList<>();
 	private List<Long> ids = new ArrayList<>();
 	private Map<String, String> nameByFullName = new HashMap<>();
+	private Map<Long, String> nameById = new HashMap<>();
 
 	public List<Stop> getAllStops() {
 		return this.stops;
@@ -57,6 +58,7 @@ public class StopRepository {
 
 		for (Stop stop : this.stops) {
 			this.ids.add(stop.getId());
+			nameById.put(stop.getId(), stop.getName());
 			nameByFullName.put(stop.getFullname(), stop.getName());
 		}
 
@@ -64,6 +66,10 @@ public class StopRepository {
 
 	public String getName(String fullName) {
 		return nameByFullName.get(fullName);
+	}
+
+	public String nameById(Long id) {
+		return nameById.get(id);
 	}
 
 	public Stop getPrev(long id) {

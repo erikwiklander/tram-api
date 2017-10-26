@@ -11,4 +11,5 @@ public class Departure {
 	private LocalDateTime depTime;
 	private LocalDateTime rtDepTime;
 	private String end;
+	private String current;
 }

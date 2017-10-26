@@ -32,6 +32,8 @@ public class RobotService {
 	@Cacheable("realtime")
 	public List<Departure> getNext(long id, Stop directionStop) {
 
+		String currentName = stopRepo.nameById(id);
+
 		if (directionStop == null) {
 			return Collections.emptyList();
 		}
@@ -72,7 +74,7 @@ public class RobotService {
 				rt = LocalDateTime.parse(String.format("%sT%s", rtDate, rtTime));
 			}
 
-			Departure d = new Departure(LocalDateTime.parse(String.format("%sT%s", date, time)), rt, end);
+			Departure d = new Departure(LocalDateTime.parse(String.format("%sT%s", date, time)), rt, end, currentName);
 
 			deps.add(d);
 
@@ -83,7 +85,7 @@ public class RobotService {
 	}
 
 	@CacheEvict(allEntries = true, cacheNames = { "realtime" })
-	@Scheduled(fixedDelay = 60_000)
+	@Scheduled(fixedDelay = 120_000)
 	public void evict() {
 		// empty
 	}
