@@ -1,0 +1,10 @@
+---
+applications:
+- name: tram-api
+  memory: 512M
+  instances: 2
+  path: target/tram-api-0.0.1-SNAPSHOT.jar
+  buildpack: https://github.com/cloudfoundry/java-buildpack.git
+  health-check-type: port
+  env:
+    JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {stack_threads: 100 }]'
