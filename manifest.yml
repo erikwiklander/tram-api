@@ -1,10 +1,13 @@
 ---
 applications:
 - name: tram-api
-  memory: 512M
+  memory: 256M
   instances: 2
   path: target/tram-api-0.0.1-SNAPSHOT.jar
   buildpack: https://github.com/cloudfoundry/java-buildpack.git
-  health-check-type: port
+  health-check-type: http
+  health-check-http-endpoint: /application/health
   env:
-    JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {stack_threads: 100 }]'
+    JBP_CONFIG_OPEN_JDK_JRE: '[memory_calculator: {stack_threads: 70 }]'
+    JAVA_OPTS: -XX:InitialCodeCacheSize=64M -XX:ReservedCodeCacheSize=64M -XX:MaxMetaspaceSize=64M -Xss568K -Xmx54613K -Xms54613K -XX:MetaspaceSize=64M
+    
