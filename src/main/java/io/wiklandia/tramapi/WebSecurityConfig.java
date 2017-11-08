@@ -2,12 +2,10 @@ package io.wiklandia.tramapi;
 
 import java.util.Arrays;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,7 +20,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final SecurityProperties securityProperties;
 	private final TramProperties tramProperties;
 
 	@Override
@@ -30,10 +27,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests().antMatchers("/application/**", "/sickla", "/closestId", "/solna").permitAll()
 				.anyRequest().authenticated();
-
-		if (securityProperties.isRequireSsl()) {
-			http.requiresChannel().anyRequest().requiresSecure();
-		}
 
 		http.httpBasic();
 
@@ -51,11 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
-	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/application/health");
 	}
 
 }
