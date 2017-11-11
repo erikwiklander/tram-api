@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,8 +26,20 @@ public class RobotService {
 
 	private final TramProperties props;
 	private final StopRepository stopRepo;
+	private final StopRepository pointRepo;
 
-	@Cacheable("realtime")
+	@Cacheable("sickla")
+	public List<Departure> getSickla(long id) {
+		Stop s = pointRepo.getPrev(id);
+		return getNext(id, s);
+	}
+
+	@Cacheable("solna")
+	public List<Departure> getSolna(long id) {
+		Stop s = pointRepo.getNext(id);
+		return getNext(id, s);
+	}
+
 	public List<Departure> getNext(long id, Stop directionStop) {
 
 		String currentName = stopRepo.nameById(id);
@@ -82,12 +92,6 @@ public class RobotService {
 
 		return deps;
 
-	}
-
-	@CacheEvict(allEntries = true, cacheNames = { "realtime" })
-	@Scheduled(fixedDelay = 120_000)
-	public void evict() {
-		// empty
 	}
 
 }
