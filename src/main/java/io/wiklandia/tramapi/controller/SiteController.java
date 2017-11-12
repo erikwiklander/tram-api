@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.wiklandia.tramapi.model.Departure;
 import io.wiklandia.tramapi.repo.StopRepository;
+import io.wiklandia.tramapi.service.Direction;
 import io.wiklandia.tramapi.service.RobotService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,20 +24,20 @@ public class SiteController {
 
 	@GetMapping("closestId")
 	public ResponseEntity<Long> getClosestId(@RequestParam("lo") double lon, @RequestParam("la") double lat) {
-		log.debug("Getting closest: {} {}", lon, lat);
+		log.info("Getting closest: {} {}", lon, lat);
 		return ResponseEntity.ok().body(pointRepo.getClosest(lon, lat).get(0).getId());
 	}
 
 	@GetMapping("solna")
 	public ResponseEntity<List<Departure>> getSolna(@RequestParam("id") long id) {
-		log.debug("Getting towards solna from: {}", id);
-		return ResponseEntity.ok().body(robotService.getSolna(id));
+		log.info("Getting towards solna from: {}", id);
+		return ResponseEntity.ok().body(robotService.getDepartures(id, Direction.SOLNA));
 	}
 
 	@GetMapping("sickla")
 	public ResponseEntity<List<Departure>> getSickla(@RequestParam("id") long id) {
-		log.debug("Getting towards sickla from: {}", id);
-		return ResponseEntity.ok().body(robotService.getSickla(id));
+		log.info("Getting towards sickla from: {}", id);
+		return ResponseEntity.ok().body(robotService.getDepartures(id, Direction.SICKLA));
 	}
 
 }

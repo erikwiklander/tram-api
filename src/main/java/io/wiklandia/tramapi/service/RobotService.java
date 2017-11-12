@@ -28,15 +28,26 @@ public class RobotService {
 	private final StopRepository stopRepo;
 	private final StopRepository pointRepo;
 
-	@Cacheable("sickla")
-	public List<Departure> getSickla(long id) {
+	@Cacheable(value = "departures")
+	public List<Departure> getDepartures(long id, Direction direction) {
+		if (direction == Direction.SOLNA) {
+			return getSolna(id);
+		} else {
+			return getSickla(id);
+		}
+	}
+
+	private List<Departure> getSickla(long id) {
+		log.debug("sickla!");
 		Stop s = pointRepo.getNext(id);
+		log.debug("Stop: {}", s);
 		return getNext(id, s);
 	}
 
-	@Cacheable("solna")
-	public List<Departure> getSolna(long id) {
+	private List<Departure> getSolna(long id) {
+		log.debug("solna!");
 		Stop s = pointRepo.getPrev(id);
+		log.debug("Stop: {}", s);
 		return getNext(id, s);
 	}
 
@@ -60,14 +71,14 @@ public class RobotService {
 				.toString();
 		// @formatter:on
 
-		log.debug("Calling api: {}", url);
+		log.info("Calling api: {}", url);
 
 		long t0 = System.currentTimeMillis();
 
 		RestTemplate restTemplate = new RestTemplate();
 		JsonNode res = restTemplate.getForEntity(url, JsonNode.class).getBody();
 
-		log.debug("Call done: ({}ms)", System.currentTimeMillis() - t0);
+		log.info("Call done: ({}ms)", System.currentTimeMillis() - t0);
 
 		List<Departure> deps = new ArrayList<>();
 		for (JsonNode departure : res.findPath("Departure")) {

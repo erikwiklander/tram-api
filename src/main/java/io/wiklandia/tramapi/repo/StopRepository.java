@@ -18,12 +18,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.wiklandia.tramapi.controller.UnknownIdException;
 import io.wiklandia.tramapi.model.Stop;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Repository for all points along tvärbanan
  * 
  *
  */
+@Slf4j
 @Component
 public class StopRepository {
 
@@ -87,6 +89,13 @@ public class StopRepository {
 	}
 
 	public Stop getNext(long id) {
+
+		if (!ids.contains(id)) {
+			throw new UnknownIdException(String.format("Id does not exist: '%s'", id));
+		}
+
+		log.debug("ids: {}", ids);
+
 		int index = ids.indexOf(id);
 		if (index == ids.size() - 1) {
 			return null;
