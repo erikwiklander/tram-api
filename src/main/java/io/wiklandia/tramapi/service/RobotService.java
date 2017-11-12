@@ -30,13 +30,13 @@ public class RobotService {
 
 	@Cacheable("sickla")
 	public List<Departure> getSickla(long id) {
-		Stop s = pointRepo.getPrev(id);
+		Stop s = pointRepo.getNext(id);
 		return getNext(id, s);
 	}
 
 	@Cacheable("solna")
 	public List<Departure> getSolna(long id) {
-		Stop s = pointRepo.getNext(id);
+		Stop s = pointRepo.getPrev(id);
 		return getNext(id, s);
 	}
 
