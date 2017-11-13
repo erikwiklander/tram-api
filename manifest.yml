@@ -1,7 +1,7 @@
 ---
 applications:
 - name: tram-api
-  memory: 256M
+  memory: 384M
   instances: 2
   path: target/tram-api-0.0.1-SNAPSHOT.jar
   buildpack: https://github.com/cloudfoundry/java-buildpack.git

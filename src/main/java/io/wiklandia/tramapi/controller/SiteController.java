@@ -1,9 +1,12 @@
 package io.wiklandia.tramapi.controller;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +41,36 @@ public class SiteController {
 	public ResponseEntity<List<Departure>> getSickla(@RequestParam("id") long id) {
 		log.info("Getting towards sickla from: {}", id);
 		return ResponseEntity.ok().body(robotService.getDepartures(id, Direction.SICKLA));
+	}
+
+	@GetMapping("dep")
+	public ResponseEntity<List<Departure>> getDepartures(@RequestParam("direction") Direction direction,
+			@RequestParam("id") long id) {
+		long t0 = System.currentTimeMillis();
+		try {
+			log.info("Getting towards {} from: {}", direction, id);
+			return ResponseEntity.ok().body(robotService.getDepartures(id, direction));
+		} finally {
+			log.info("Total request time: {}ms", System.currentTimeMillis() - t0);
+		}
+	}
+
+	/**
+	 * This will make the enum matching case insensitve, makes the client a bit
+	 * prettier :)
+	 * 
+	 * @param dataBinder
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		dataBinder.registerCustomEditor(Direction.class, new PropertyEditorSupport() {
+
+			@Override
+			public void setAsText(String text) {
+				setValue(Direction.valueOf(text.toUpperCase()));
+			}
+
+		});
 	}
 
 }
