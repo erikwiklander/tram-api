@@ -2,11 +2,11 @@ package io.wiklandia.tramapi;
 
 import java.util.Arrays;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,14 +22,21 @@ import lombok.AllArgsConstructor;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final TramProperties tramProperties;
+	private final SecurityProperties securityProperties;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/application/**", "/sickla", "/closestId", "/solna", "/dep").permitAll()
-				.anyRequest().authenticated();
+		// @formatter:off
+		http.authorizeRequests()
+			.antMatchers("/sickla", "/closestId", "/solna", "/dep", "/cloudfoundryapplication/**", "/application/**", "/disruptions").permitAll()
+			.anyRequest().authenticated();
+		// @formatter:on
 
-		http.requiresChannel().antMatchers("/**").requiresSecure();
+		if (securityProperties.isRequireSsl()) {
+			http.requiresChannel().antMatchers("/**").requiresSecure();
+			http.requiresChannel().antMatchers("/cloudfoundryapplication/**", "/application/health").requiresInsecure();
+		}
 
 		http.httpBasic();
 
@@ -49,11 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
-	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/application/health", "/cloudfoundryapplication/**");
 	}
 
 }

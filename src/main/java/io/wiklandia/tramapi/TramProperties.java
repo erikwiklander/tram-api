@@ -14,6 +14,8 @@ public class TramProperties {
 
 	private String robotApi;
 	private String robotKey;
+	private String disruptionApi;
+	private String disruptionKey;
 	private int cacheTtl = 60;
 
 	private List<String> allowedOrigins;

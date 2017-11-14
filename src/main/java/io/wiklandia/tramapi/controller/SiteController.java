@@ -31,18 +31,6 @@ public class SiteController {
 		return ResponseEntity.ok().body(pointRepo.getClosest(lon, lat).get(0).getId());
 	}
 
-	@GetMapping("solna")
-	public ResponseEntity<List<Departure>> getSolna(@RequestParam("id") long id) {
-		log.info("Getting towards solna from: {}", id);
-		return ResponseEntity.ok().body(robotService.getDepartures(id, Direction.SOLNA));
-	}
-
-	@GetMapping("sickla")
-	public ResponseEntity<List<Departure>> getSickla(@RequestParam("id") long id) {
-		log.info("Getting towards sickla from: {}", id);
-		return ResponseEntity.ok().body(robotService.getDepartures(id, Direction.SICKLA));
-	}
-
 	@GetMapping("dep")
 	public ResponseEntity<List<Departure>> getDepartures(@RequestParam("direction") Direction direction,
 			@RequestParam("id") long id) {
