@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,6 +29,7 @@ public class RobotService {
 	private final StopRepository stopRepo;
 	private final StopRepository pointRepo;
 
+	@Retryable(maxAttempts = 3)
 	@Cacheable(value = "departures")
 	public List<Departure> getDepartures(long id, Direction direction) {
 		if (direction == Direction.SOLNA) {

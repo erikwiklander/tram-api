@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +17,7 @@ import lombok.AllArgsConstructor;
 @EnableAsync
 @SpringBootApplication
 @AllArgsConstructor
+@EnableRetry
 public class TramApiApplication {
 
 	public static void main(String[] args) {

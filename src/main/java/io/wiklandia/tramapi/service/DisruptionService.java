@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,13 +23,14 @@ public class DisruptionService {
 
 	private final TramProperties props;
 
+	@Retryable(maxAttempts = 3)
 	@Cacheable("disruptions")
 	public List<Disruption> getDisruptions() {
 
 		// @formatter:off
 		String url = UriComponentsBuilder.fromHttpUrl(props.getDisruptionApi())
 				.queryParam("key", props.getDisruptionKey())
-//				.queryParam("LineNumber", "22")
+				.queryParam("LineNumber", "22")
 				.build()
 				.toString();
 		// @formatter:on
