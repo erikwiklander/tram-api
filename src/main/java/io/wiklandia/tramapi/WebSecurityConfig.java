@@ -2,7 +2,6 @@ package io.wiklandia.tramapi;
 
 import java.util.Arrays;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,7 +22,6 @@ import lombok.AllArgsConstructor;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final TramProperties tramProperties;
-	private final SecurityProperties securityProperties;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -32,13 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// @formatter:off
 		http.authorizeRequests()
-			.antMatchers("/sickla", "/closestId", "/solna", "/dep", "/cloudfoundryapplication/**", "/application/**", "/disruptions").permitAll()
+			.antMatchers("/sickla", "/closestId", "/solna", "/dep", "/cloudfoundryapplication/**", "/actuator/**", "/disruptions").permitAll()
 			.anyRequest().authenticated();
 		// @formatter:on
 
-		if (securityProperties.isRequireSsl()) {
+		if (tramProperties.isRequireSsl()) {
 			http.requiresChannel().antMatchers("/**").requiresSecure();
-			http.requiresChannel().antMatchers("/cloudfoundryapplication/**", "/application/health").requiresInsecure();
+			http.requiresChannel().antMatchers("/cloudfoundryapplication/**", "/actuator/health").requiresInsecure();
 		}
 
 		http.httpBasic();
