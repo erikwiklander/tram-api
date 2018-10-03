@@ -126,10 +126,12 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>1.2.1</version>
 			</plugin>
-			<plugin>
+<!-- 
+ 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
 			</plugin>
+ -->
 		</plugins>
 	</build>
 
