@@ -26,27 +26,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().mvcMatchers("/cloudfoundryapplication/**").permitAll();
-
 		// @formatter:off
 		http.authorizeRequests()
-			.antMatchers("/sickla", "/closestId", "/solna", "/dep", "/cloudfoundryapplication/**", "/actuator/**", "/disruptions").permitAll()
+			.antMatchers("/closestId", "/dep", "/disruptions").permitAll()
 			.anyRequest().authenticated();
 		// @formatter:on
-
-		if (tramProperties.isRequireSsl()) {
-			http.requiresChannel().antMatchers("/**").requiresSecure();
-			http.requiresChannel().antMatchers("/cloudfoundryapplication/**", "/actuator/health").requiresInsecure();
-		}
-
 		http.httpBasic();
-
 		http.headers().disable();
-
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
 		http.cors();
-
 	}
 
 	@Bean
