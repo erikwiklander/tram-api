@@ -28,13 +28,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// @formatter:off
 		http.authorizeRequests()
-			.antMatchers("/closestId", "/dep", "/disruptions").permitAll()
+			.antMatchers("/closestId", "/dep", "/disruptions", "/actuator/health").permitAll()
 			.anyRequest().authenticated();
 		// @formatter:on
 		http.httpBasic();
 		http.headers().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.cors();
+
+		if (tramProperties.isRequireSsl()) {
+			http.requiresChannel().anyRequest().requiresSecure();
+		}
 	}
 
 	@Bean
